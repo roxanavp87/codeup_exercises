@@ -36,3 +36,25 @@ console.log("-------------------------------------------------------------------
 for(var i=100; i>=5; i-=5) {
     console.log(i);
 }
+
+console.log("---------------------------------------------------------------------------");
+console.log("Extra Exercise");
+console.log("---------------------------------------------------------------------------");
+
+// Create the html code in order to display generate a random list of 5 <li> inside of an <ul> and the number inside the <li> elements could be between 10 and 20.
+// The output should look like this:
+// <ul>
+// <li>Random 13</li>
+// <li>Random 19</li>
+// <li>Random 15</li>
+// <li>Random 16</li>
+// <li>Random 17</li>
+// </ul>
+
+var iter = 5;
+console.log("<ul>");
+for(var i=1; i<=iter; i++) {
+    number =  Math.floor(Math.random() * 11) + 10;
+    console.log("   <li>Random " + number +  "</li>");
+}
+console.log("<ul>");
