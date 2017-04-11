@@ -54,9 +54,12 @@ console.log("-------------------------------------------------------------------
 // </ul>
 
 var iter = 5;
-console.log("<ul>");
+var list = "<ul> \n";
+
 for(var i=1; i<=iter; i++) {
     number =  Math.floor(Math.random() * 11) + 10;
-    console.log("   <li>Random " + number +  "</li>");
+    list+= "   <li>Random " + number +  "</li> \n";
 }
-console.log("<ul>");
+list+= "</ul>";
+console.log(list);
+document.write(list);
