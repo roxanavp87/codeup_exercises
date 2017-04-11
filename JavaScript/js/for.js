@@ -2,12 +2,14 @@
  * Created by roxana on 4/11/17.
  */
 
-var number = Math.floor(Math.random() * 10) + 1;
-var mult;
+"use strict";
 
 console.log("---------------------------------------------------------------------------");
 console.log("Exercise 1");
 console.log("---------------------------------------------------------------------------");
+
+var number = Math.floor(Math.random() * 10) + 1;
+var mult;
 
 for(var i=1; i<=10; i++) {
     mult = number*i;
