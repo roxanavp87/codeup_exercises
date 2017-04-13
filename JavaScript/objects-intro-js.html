@@ -6,5 +6,54 @@
 </head>
 <body>
     <script src="js/objects.js"></script>
+    <script>
+        "use strict";
+
+        // todo:
+        // Create an array of objects that represent books.
+        // Each book should have a title and an author property.
+        // The author property should be an object with a firstName and lastName.
+        // Be creative and add at least 5 books to the array
+        // var books = [todo];
+        var books = [
+            {
+                title: 'The Lord of the Rings',
+                author: {firsName:  'J. R. R.', lastName: 'Tolkien'}
+            },
+            {
+                title: 'The Da Vinci Code',
+                author: {firsName:  'Dan', lastName: 'Brown'}
+            },
+            {
+                title: 'The Little Prince',
+                author: {firsName:  'Antoine', lastName: 'de Saint-Exupery'}
+            },
+            {
+                title: 'Harry Potter and the Sorcerer\'s Stone',
+                author: {firsName:  'J. K.', lastName: 'Rowling'}
+            },
+            {
+                title: 'And Then There Were None ',
+                author: {firsName:  'Aghata', lastName: 'Christie'}
+            }
+        ];
+
+        // log out the books array
+        console.log(books);
+
+        // todo:
+        // Loop through the array of books using .forEach and print out the specified information about each one.
+        // start loop here
+
+        books.forEach(function (book, item) {
+            console.log("Book #" + item);
+            console.log("Title: " + book.title);
+            console.log("Author: " + book.author.firsName + ' ' + book.author.lastName);
+            console.log("---");
+        });
+
+
+
+    </script>
 </body>
 </html>
