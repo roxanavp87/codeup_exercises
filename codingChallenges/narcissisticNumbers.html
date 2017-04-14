@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Narcissistic Numbers</title>
+</head>
+<body>
+    <script>
+        (function () {
+            'use strict';
+            // Objective: Write a script to generate and output the first 25 narcissistic integers.
+
+            function generateNarcissisticNumbers(totalOfNumbers) {
+                // n: number, m: digits of n
+                // totalOfNumbers: total of numbers to generate
+                var n = 0, m;
+                var condition = 0, stop=0;
+                var digits = [];
+                var string;
+                while (stop < totalOfNumbers) {
+                    string = n.toString();
+                    m = string.length;
+
+                    for (var i = 0; i < m; i++) {
+                        digits[i] = parseInt(string.substring(i, i + 1));
+                        condition += Math.pow(digits[i], m);
+                    }
+
+                    if (condition === n) {
+                        console.log(n);
+                        stop++;
+                    }
+
+                    n++;
+                    condition = 0;
+                }
+            }
+
+            generateNarcissisticNumbers(25);
+
+        })();
+    </script>
+</body>
+</html>
