@@ -1,0 +1,44 @@
+.box {
+    border: 1px solid black;
+    width: 50px;
+    height: 50px;
+    padding: 10px;
+    color: #FFFFFF;
+    font-weight: bold;
+    margin-top: 50px;
+    margin-right: 50px;
+    float: left;
+    position: relative;
+}
+
+#red {
+    background-color: #D84231;
+}
+
+#orange {
+    background-color: #EAAE33;
+}
+
+#yellow {
+    background-color: #FCF733;
+}
+
+#green {
+    background-color: #578C05;
+    clear: both;
+}
+
+#blue {
+    background-color: #234AFB;
+}
+
+#violet {
+    background-color: #DF8BF0;
+}
+
+.logo {
+    position: absolute;
+    top: -50px;
+    left: 50px;
+}
+

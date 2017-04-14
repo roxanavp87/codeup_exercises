@@ -1,0 +1,65 @@
+body, html{
+    height: 100%;
+    width: 100%;
+}
+
+/*universal selector*/
+* {
+    margin: 0;
+    padding: 0;
+    font-size: 1.1em;
+    line-height: 1.2em;
+    font-family: sans-serif;
+}
+
+/*To work with responsive */
+img, embed, object, video {
+    max-width: 100%;
+}
+
+nav a, button {
+    min-height: 48px;
+    min-width: 48px;
+}
+
+/*  */
+
+nav > ul {
+    list-style: none;
+}
+
+nav, h1 {
+    margin-bottom: 1em;
+}
+
+.container {
+    width: 960px;
+    margin: 0 auto;
+}
+
+.nav-item {
+    display: inline-block;
+}
+
+main {
+    width: 740px;
+    float: left;
+}
+
+aside {
+    width: auto;
+    float: right;
+}
+
+footer {
+    clear: both;
+}
+
+
+/*media query embebed without using link*/
+@media screen and (max-width:480px){
+    body {
+        color: brown;
+    }
+
+}

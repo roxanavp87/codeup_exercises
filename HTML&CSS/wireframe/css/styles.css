@@ -1,0 +1,145 @@
+/*Reset*/
+
+body, html{
+    height: 100%;
+    width: 100%;
+}
+
+
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    font-size: 1.1em;
+    line-height: 1.2em;
+    box-sizing: border-box;
+}
+
+nav ul {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+}
+
+/*Layout*/
+
+.container {
+    width: 90%;
+    max-width: 890px;
+    margin: 0 auto;
+}
+
+header > h1 {
+    float: left;
+}
+
+header > nav {
+    float: right;
+}
+
+.hero {
+    clear: both;
+    padding-top: 35px;
+}
+
+.nav-item {
+    display: inline-block;
+    padding: 7px;
+}
+
+main {
+    float: left;
+    width: 65%;
+}
+
+aside {
+    float: right;
+    padding-right: 5px;
+    width: 30%;
+}
+
+footer {
+    clear: both;
+}
+
+.logo-footer {
+    width: 30px;
+    height: 30px;
+}
+
+footer p {
+    float: left;
+}
+
+.footer-nav {
+    float: right;
+}
+
+a:visited {
+    color: blue;
+}
+
+.skip {
+    display: none;
+}
+
+@media screen and (max-width: 500px) {
+    header > nav {
+        float: none;
+    }
+    header > h1 {
+        float: none;
+        text-align: center;
+    }
+    .nav-item {
+        display: block;
+        margin-bottom: 5px;
+    }
+    main {
+        float: none;
+        width: 100%;
+    }
+    aside {
+        float: none;
+        width: 100%;
+    }
+    footer p {
+        float: none;
+    }
+
+    .footer-nav {
+        float: none;
+    }
+
+    .footer-nav li {
+        display: inline-block;
+    }
+
+    .skip {
+        display: block;
+        text-align: center;
+        text-decoration: none;
+        background-color: cyan;
+        border: 1px solid grey;
+        color: black;
+        padding-top: 10px;
+        margin-top: 10px;
+    }
+
+    .nav-header li {
+        background-color: lightgray;
+        text-align: center;
+    }
+
+    .nav-header ul {
+        padding-left: 0;
+    }
+
+    .hero {
+        clear: both;
+        padding-top: 0px;
+    }
+
+}
