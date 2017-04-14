@@ -5,6 +5,10 @@
 'use strict';
 
 (function () {
+    console.log("---------------------------------------------------------------------------");
+    console.log("function that accepts a string as input and returns the number of keypresses");
+    console.log("---------------------------------------------------------------------------");
+
     function returnKeypresses(inputString) {
         var letters = ['adgjmptw ', 'behknqux', 'cfilorvy', 'z'];
         var char, keypresses = 0;
@@ -21,7 +25,15 @@
         return keypresses;
     }
 
-console.log(returnKeypresses('hey there'));
+    console.log(returnKeypresses('hey there'));
 
 
+    console.log("---------------------------------------------------------------------------");
+    console.log("Split an array up into chunks");
+    console.log("---------------------------------------------------------------------------");
+
+    function chunk(numbers, chunks) {
+        var totalArrays = numbers.length/chunks;
+    }
+    
 })();
