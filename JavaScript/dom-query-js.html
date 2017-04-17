@@ -7,6 +7,10 @@
 <body>
 
 <h1 id="main-header">Hello World!</h1>
+<button id="btn1">btn-1</button>
+<button id="btn2">btn-2</button>
+<button id="btn3">btn-3</button>
+<button id="btn4">btn-4</button>
 <ul>
     <li data-dbid="1">Item 1</li>
     <li data-dbid="2">Item 2</li>
@@ -59,6 +63,32 @@
 
         // TODO: Change the text in the first sub paragraph to "Mission Accomplished!"
         subParagraphs[0].innerText = "Mission Accomplished!";
+
+        var btn1 = document.getElementById('btn1');
+        var btn2 = document.getElementById('btn2');
+        var btn3 = document.getElementById('btn3');
+        var btn4 = document.getElementById('btn4');
+
+        function sayHello() {
+            alert('Hello from Rox');
+            btn1.removeEventListener('click', sayHello);
+            console.log('Event listener removed.');
+        }
+        btn1.addEventListener('click', sayHello);
+
+
+        btn2.addEventListener('click', function () {
+            subHeader.style.color = "#fb8aff";
+        });
+
+        btn3.addEventListener('click', function () {
+            subParagraphs[0].innerText = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
+        });
+
+        btn4.addEventListener('mouseover', function () {
+            mainHeader.innerHTML = "Hello Fellows!"
+        });
+
     })();
 </script>
 </body>
