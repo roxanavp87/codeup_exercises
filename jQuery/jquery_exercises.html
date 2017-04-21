@@ -3,6 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>jQuery Selectors</title>
+    <style>
+        .adv {
+            width: 400px;
+            height: 400px;
+            background-color: #5bc0de;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <h1 id="header">Lorem ipsum dolor sit.</h1>
@@ -14,6 +22,11 @@
     <p id="first-p">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere harum molestiae, molestias quae quaerat quod.</p>
     <p id="second-p">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet aperiam consectetur consequuntur dignissimos ea error exercitationem expedita fuga inventore libero nobis nulla possimus repudiandae, sed sequi tempora voluptatum.</p>
     <button id="btn">Click Me!</button>
+
+    <div class="adv">
+        <button id="btn-close">Close</button>
+    </div>
+
     <script
             src="https://code.jquery.com/jquery-2.2.4.min.js"
             integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
@@ -36,7 +49,15 @@
                 $(this).css('color','#f00');
             }, function () {
                 $(this).css('color','#fff');
-            })
+            });
+
+            $('.adv').click(function () {
+                var linkArray = ['https://www.yahoo.com', 'https://www.amazon.com', 'https://www.outlook.com'];
+                for (var i = 0; i < linkArray.length; i++) {
+                    // will open each link in the current window
+                    window.open(linkArray[i]);
+                }
+            });
 
         });
 
