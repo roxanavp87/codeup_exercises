@@ -19,6 +19,7 @@
     </style>
 </head>
 <body>
+
 <h1>FAQ about national parks <a id="answers" href="">Show answers</a></h1>
 <dl>
     <dt> Can I drink alcohol in a state park?</dt>
@@ -80,6 +81,25 @@
     </dd>
 </dl>
 
+<button id="btn">Click Me!</button>
+<h1>Parks List</h1>
+<h3>National Parks</h3>
+<ul id="national-parks">
+    <li>Arches</li>
+    <li>Badlands</li>
+    <li>Carlsbad Caverns</li>
+    <li>Denali</li>
+    <li>Everglades</li>
+</ul>
+<h3>State Parks of Texas</h3>
+<ul id="state-parks-texas">
+    <li>Abilene</li>
+    <li>Big Bend</li>
+    <li>Choke Canyon</li>
+    <li>Davis Mountains</li>
+    <li>Enchanted Rock</li>
+</ul>
+
 <script
         src="https://code.jquery.com/jquery-3.2.1.min.js"
         integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
@@ -97,6 +117,24 @@
         $(this).next().addClass('visible');
         console.log($('dd'));
     });
+
+    $('#btn').click(function () {
+
+        $('h3').next().each(function (index, element) {
+            $(element).children().last().css('background-color', 'yellow');
+        });
+    });
+
+    $('h3').click(function () {
+        $(this).next().children().css('font-weight', 'bold');
+    });
+
+    $('li').click(function () {
+        $(this).parent().children().first().css('color', 'blue');
+    });
+
+
+
 
 </script>
 </body>
