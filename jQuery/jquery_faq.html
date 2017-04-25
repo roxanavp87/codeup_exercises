@@ -16,6 +16,12 @@
             font-size: 14px;
         }
 
+        img {
+            width: 400px;
+            height: 200px;
+            margin: 20px 0;
+        }
+
     </style>
 </head>
 <body>
@@ -100,6 +106,23 @@
     <li>Enchanted Rock</li>
 </ul>
 
+
+<!--Bonus exercise-->
+<div id="first-frame">
+    <img src="img/img1.jpg" alt="">
+</div>
+<button id="btn-1">Swap to the right</button>
+
+<div>
+    <img src="img/img2.jpg" alt="">
+</div>
+<button id="btn-2">Swap to the right or left</button>
+
+<div>
+    <img src="img/img3.jpg" alt="">
+</div>
+<button id="btn-3">Swap to the left</button>
+
 <script
         src="https://code.jquery.com/jquery-3.2.1.min.js"
         integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
@@ -131,6 +154,40 @@
 
     $('li').click(function () {
         $(this).parent().children().first().css('color', 'blue');
+    });
+
+    var img1_src = $('#first-frame').children().attr('src');
+    var img2_src = $('#first-frame').next().next().children().attr('src');
+    var img3_src = $('#first-frame').next().next().next().next().children().attr('src');
+
+    $('#btn-1').click(function () {
+        img1_src = $(this).prev().children().attr('src');
+        img2_src = $(this).next().children().attr('src');
+        $(this).next().children().attr('src', img1_src);
+        $(this).prev().children().attr('src', img2_src);
+    });
+    
+    $('#btn-2').click(function () {
+        img1_src = $('#first-frame').children().attr('src');
+        img2_src = $('#first-frame').next().next().children().attr('src');
+        img3_src = $(this).next().children().attr('src');
+        var random = Math.round(Math.random()); // 0: right, 1: left
+        console.log(random)
+        if(random === 0) {
+            $(this).prev().prev().prev().children().attr('src', img2_src);
+            $(this).prev().children().attr('src', img1_src);
+        } else {
+            $(this).next().children().attr('src', img2_src);
+            $(this).prev().children().attr('src', img3_src);
+        }
+    });
+
+    $('#btn-3').click(function () {
+        img1_src = $('#first-frame').children().attr('src');
+        img2_src = $('#first-frame').next().next().children().attr('src');
+        img3_src = $(this).prev().children().attr('src');
+        $('#first-frame').children().attr('src',img3_src);
+        $(this).prev().children().attr('src', img2_src);
     });
 
 
