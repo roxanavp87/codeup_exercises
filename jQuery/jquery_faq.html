@@ -26,6 +26,14 @@
 </head>
 <body>
 
+<!--Show, hide and toggle exercises-->
+<div>
+    <h1>Would you like to sign up for our newsletter? <span id="sign-up" style="color: #f00; text-decoration: underline">x</span> </h1>
+    <h2 id="register" class="invisible">Sign up!</h2>
+</div>
+
+
+<!--Traversing exercise-->
 <h1>FAQ about national parks <a id="answers" href="">Show answers</a></h1>
 <dl>
     <dt> Can I drink alcohol in a state park?</dt>
@@ -107,7 +115,7 @@
 </ul>
 
 
-<!--Bonus exercise-->
+<!--Bonus exercise for traversing-->
 <div id="first-frame">
     <img src="img/img1.jpg" alt="">
 </div>
@@ -130,6 +138,8 @@
 </script>
 
 <script>
+
+    <!--Traversing exercise-->
     $('#answers').click(function (event) {
         event.preventDefault();
         $('dd').toggleClass('invisible');
@@ -148,14 +158,17 @@
         });
     });
 
-    $('h3').click(function () {
-        $(this).next().children().css('font-weight', 'bold');
-    });
+//    $('h3').click(function () {
+//        $(this).next().children().css('font-weight', 'bold');
+//    });
 
     $('li').click(function () {
         $(this).parent().children().first().css('color', 'blue');
     });
 
+    <!--End traversing exercise-->
+
+    <!--Bonus exercise for traversing-->
     var img1_src = $('#first-frame').children().attr('src');
     var img2_src = $('#first-frame').next().next().children().attr('src');
     var img3_src = $('#first-frame').next().next().next().next().children().attr('src');
@@ -189,7 +202,36 @@
         $('#first-frame').children().attr('src',img3_src);
         $(this).prev().children().attr('src', img2_src);
     });
+    <!--End bonus exercise for traversing-->
 
+
+    <!--Show, hide and toggle exercises-->
+    $('#sign-up').click(function () {
+        $(this).parent().hide();
+    });
+
+    <!--End show, hide and toggle exercises-->
+    $('h3').next().addClass('invisible');
+
+    $('h3').click(function () {
+        $(this).next().slideToggle(
+            {
+                duration: 600,
+                easing: 'linear',
+                progress: function () {
+                    console.log('In progress...');
+                },
+                complete: function () {
+                    console.log('Complete');
+                }
+            }
+        );
+
+    });
+
+    $('#register').delay(8000).fadeIn().click(function () {
+        confirm('Do you want to sign up?')
+    });
 
 
 
