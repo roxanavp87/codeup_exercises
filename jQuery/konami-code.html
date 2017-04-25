@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Konami Code</title>
+    <style>
+        div {
+            text-align: center;
+        }
+        #img {
+            width: 650px;
+            height: 500px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+
+<audio class="audio" src="Dont_Wanna_Know.mp3"></audio>
+<div>
+    <h1>Konami Code</h1>
+    <img id="img" alt="">
+</div>
+
+<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous">
+</script>
+
+<script>
+    'use strict';
+
+    $('document').ready(function () {
+        var counter = 0;
+        var resetCounter = true;
+        var code = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65, 13];
+        var valCode = [];
+        var result = true;
+
+        function decToHex(decimal) {
+            var hex = '';
+
+            while (decimal !== 0) {
+                if(decimal % 16 > 9) {
+                    switch (decimal % 16) {
+                        case 10:
+                            hex += 'A';
+                            break;
+                        case 11:
+                            hex += 'B';
+                            break;
+                        case 12:
+                            hex += 'C';
+                            break;
+                        case 13:
+                            hex += 'D';
+                            break;
+                        case 14:
+                            hex += 'E';
+                            break;
+                        case 15:
+                            hex += 'F';
+                            break;
+                    }
+                } else {
+                    hex += decimal % 16;
+                }
+                decimal = parseInt(decimal / 16);
+            }
+
+            // reverse the string
+            hex = ( ( hex.split('') ).reverse() ).join('');
+            return hex;
+        }
+
+//        console.log(decToHex(590));
+
+        $(document).keyup(function(event){
+//            console.log(event.keyCode);
+
+            counter = (code[counter] === event.keyCode) ? (counter +1) : 0;
+            console.log(counter);
+            if(counter === code.length) {
+                counter = 0;
+                $('body').css('background-color', '#FFF2EA');
+                $('.audio').get(0).play();
+
+                var stop = event.keyCode, count = 0;
+                var imgs = ['img/img1.jpg', 'img/img2.jpg', 'img/img3.jpg', 'img/img4.jpg', 'img/img5.jpg', 'img/img6.jpg', 'img/img7.jpg', 'img/img8.jpg'];
+                $('#img').css('display', 'inline-block');
+
+                var intervalId = setInterval(function () {
+                    if (stop === 27) {
+                        clearInterval(intervalId);
+                    } else {
+                        $('#img').attr('src', imgs[count]);
+                        count++;
+                        if(count === imgs.length) {
+                            count = 0;
+                        }
+                    }
+                }, 1000);
+
+
+                var intervalId_1 = setInterval(function () {
+                    if (stop === 27) {
+                        clearInterval(intervalId_1);
+                    } else {
+                        var randcolor = decToHex(Math.floor(Math.random()*16777215));
+                        $('h1').css('color', '#' + randcolor);
+                    }
+                }, 500);
+            }
+        });
+
+
+    });
+
+
+</script>
+
+</body>
+</html>
