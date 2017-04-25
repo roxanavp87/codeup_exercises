@@ -8,6 +8,10 @@
             display: none;
         }
 
+        .state {
+            display: none;
+        }
+
         .highlighted {
             background-color: yellow;
         }
@@ -23,13 +27,16 @@
         }
 
     </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../JavaScript/css/bootstrap.min.css">
 </head>
 <body>
 
 <!--Show, hide and toggle exercises-->
 <div>
     <h1>Would you like to sign up for our newsletter? <span id="sign-up" style="color: #f00; text-decoration: underline">x</span> </h1>
-    <h2 id="register" class="invisible">Sign up!</h2>
+    <h2 id="register" class="state">Register!</h2>
+    <div class="alert alert-info state">Register for ....</div>
 </div>
 
 
@@ -179,7 +186,7 @@
         $(this).next().children().attr('src', img1_src);
         $(this).prev().children().attr('src', img2_src);
     });
-    
+
     $('#btn-2').click(function () {
         img1_src = $('#first-frame').children().attr('src');
         img2_src = $('#first-frame').next().next().children().attr('src');
@@ -230,11 +237,14 @@
     });
 
     $('#register').delay(8000).fadeIn().click(function () {
-        confirm('Do you want to sign up?')
+//        confirm('Do you want to sign up?');
+        $('.alert').fadeIn().delay(2000).fadeOut();
     });
 
 
 
 </script>
+
+<script src="../JavaScript/js/bootstrap.min.js"></script>
 </body>
 </html>
