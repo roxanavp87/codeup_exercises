@@ -6,8 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../JavaScript/css/bootstrap.min.css">
     <style>
+
+        body {
+            background-image: url("img/sabri-tuzcu-197978.jpg");
+            background-size: cover;
+            background-attachment: fixed;
+            height: 100%;
+            width: 100%;
+        }
+
         h1 {
             text-align: center;
+            color: white;
         }
 
         .nav {
@@ -49,7 +59,8 @@
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="ajax_blog.html">Home <span class="sr-only">(current)</span></a></li>
                         <li><a href="#">Contact</a></li>
-                        <li><a href="#">About</a></li>
+                        <!-- to trigger modal -->
+                        <li><a href="#" data-toggle="modal" data-target="#myModal">Post</a></li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
@@ -58,10 +69,6 @@
 
     <main class="container">
         <div id="posts"></div>
-        <!--<button id="btn-post" class="btn btn-lg btn-success">Post</button>-->
-        
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Post</button>
 
         <!-- Modal -->
         <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
@@ -131,8 +138,9 @@
                 };
 
                 $.post('data/blog.json', options).done(function(data) {
-                    // do something with the response
+                    $("#posts").html('');
                     data.push(options);
+                    console.log(data);
                     refreshPosts(data);
 
                 });
