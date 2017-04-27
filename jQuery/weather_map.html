@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather Map API</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../JavaScript/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+    <style>
+        body {
+            background-size: cover;
+            background-attachment: fixed;
+            height: 100%;
+            width: 100%;
+        }
+
+        .forecast {
+            background-color: #F2F2F2;
+            border: 1px solid darkgray;
+            text-align: center;
+        }
+
+        .forecast:hover {
+            opacity: 0.7;
+        }
+
+        .container {
+            width: 90%;
+            margin-top: 35px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        #map {
+            height: 500px;
+            margin-top: 20px;
+            border: 1px solid darkgray;
+        }
+
+        #city {
+            font-size: 20px;
+            padding-left: 25px;
+        }
+
+        #logo img {
+            width: 22%;
+            margin-bottom: -5%;
+            margin-top: -5%;
+        }
+
+        #refresh {
+            font-size: 35px;
+            font-family: 'Pacifico', cursive;
+            padding-left: 20px;
+            text-decoration: none;
+
+        }
+
+        #logo {
+            background-color: #E9F1F5;
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div id="logo">
+        <img src="img/googleweather.gif" alt="">
+        <a href="weather_map.html" id="refresh">Weather Channel</a>
+    </div>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a id="city" class="navbar-brand" href="#"></a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <form class="navbar-form navbar-right">
+                <div class="form-group">
+                    <input type="text" id="search" class="form-control" placeholder="Search city...">
+                </div>
+                <button id="btn-go" type="submit" class="btn btn-default">GO</button>
+            </form>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+</header>
+
+<main class="container">
+    <!--<h2 id="city"></h2>-->
+    <div class="row">
+        <div id="day1" data-day=0 class="col-xs-4 forecast"></div>
+        <div id="day2" data-day=1 class="col-xs-4 forecast"></div>
+        <div id="day3" data-day=2 class="col-xs-4 forecast"></div>
+    </div>
+
+    <div id="map" class="row"></div>
+
+</main>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous">
+ </script>
+<script src="../JavaScript/js/bootstrap.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPVcSI9bQYo2yMU3vykq0SQ-hDpkSl-vU"></script>
+
+<script>
+    $('document').ready(function () {
+        'use strict';
+
+        // Declarations for Google Map API
+        var map, lat, lng, mapOptions, marker;
+
+        //Declarations for weather API
+        var object;
+
+        function renderMap(lat, lng) {
+            mapOptions = {
+                zoom: 8,
+                center: {lat: lat, lng: lng}
+            };
+            map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+            marker = new google.maps.Marker({
+                map: map,
+                draggable: true,
+                animation: google.maps.Animation.DROP,
+                position: {lat: lat, lng: lng}
+            });
+        }
+        
+        function update3DaysForecast(data) {
+            console.log(data);
+            data.list.forEach(function (list, index) {
+                var output = '';
+                output  = '<b class="temp">' + parseInt(list.temp.max) + '&deg;' + '/' + parseInt(list.temp.min) + '&deg;'+ '</b>';
+                output += '<br> <img src="http://openweathermap.org/img/w/' + list.weather[0].icon + '.png">';
+                output += '<br><b>' + list.weather[0].main + ': </b>' + list.weather[0].description;
+                output += '<br><b>Humidity: </b> ' + list.humidity;
+                output += '<br><b>Wind: </b> ' + parseInt(list.speed);
+                output += '<br><b>Pressure: </b> ' + list.pressure;
+                $('#day' + (index+1)).html(output);
+            });
+
+            $('#city').text(data.city.name);
+            $('.temp').css('font-size', '25px');
+
+            lat = data.city.coord.lat;
+            lng = data.city.coord.lon;
+        }
+
+        $.get("http://api.openweathermap.org/data/2.5/forecast/daily", {
+
+            APPID: "daccf0a60cafe2bdc646583c5f8fbdbb",
+            q:     "San Antonio, TX",
+            cnt: 3,
+            units: "imperial"
+
+        }).done(function (data) {
+
+            update3DaysForecast(data);
+
+            //Update data form weather API
+            object = data;
+
+            //Update background to current weather
+            $('body').css('background-image', 'url("img/' + (data.list[0].weather[0].main).toLowerCase() + '.gif")');
+
+            // Init the map
+            renderMap(lat, lng);
+            
+            marker.addListener('click', function () {
+                if (marker.getAnimation() !== null) {
+                    marker.setAnimation(null);
+                } else {
+                    marker.setAnimation(google.maps.Animation.BOUNCE);
+                }
+            });
+
+
+            marker.addListener('dragend', function(event){
+                lat = event.latLng.lat();
+                lng = event.latLng.lng();
+                $.get("http://api.openweathermap.org/data/2.5/forecast/daily", {
+
+                    APPID: "daccf0a60cafe2bdc646583c5f8fbdbb",
+                    lat: lat,
+                    lon: lng,
+                    cnt: 3,
+                    units: "imperial"
+
+                }).done(function (data) {
+                    update3DaysForecast(data);
+//                    renderMap(lat, lng);
+
+                    //Update data form weather API
+                    object = data;
+
+                    //Update background to current weather
+                    $('body').css('background-image', 'url("img/' + (data.list[0].weather[0].main).toLowerCase() + '.gif")');
+
+                });
+
+            });
+
+            $('.forecast').click(function () {
+//                console.log(object)
+                //Update background when it clicked a forecast
+                var day = $(this).attr('data-day');
+                $('body').css('background-image', 'url("img/' + (object.list[day].weather[0].main).toLowerCase() + '.gif")');
+            });
+
+            $('#btn-go').click(function (event) {
+                var city = $('#search').val();
+                event.preventDefault();
+                $.get("http://api.openweathermap.org/data/2.5/forecast/daily", {
+
+                    APPID: "daccf0a60cafe2bdc646583c5f8fbdbb",
+                    q: city,
+                    cnt: 3,
+                    units: "imperial"
+
+                }).done(function (data) {
+                    update3DaysForecast(data);
+
+                    //Update data form weather API
+                    object = data;
+
+                    //Update background to current weather
+                    $('body').css('background-image', 'url("img/' + (data.list[0].weather[0].main).toLowerCase() + '.gif")');
+
+                });
+
+            });
+
+
+        });  // end $.get(...weather...
+
+
+
+
+
+    });
+</script>
+</body>
+</html>
