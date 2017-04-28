@@ -18,6 +18,8 @@
             background-color: #F2F2F2;
             border: 1px solid darkgray;
             text-align: center;
+            padding-top: 15px;
+            padding-bottom: 15px;
         }
 
         .forecast:hover {
@@ -62,6 +64,17 @@
             background-color: #E9F1F5;
         }
 
+        .dayOfWeek {
+            font-size: 23px;
+            color: #23527C;
+            font-weight: bold;
+        }
+
+        .icons {
+            width: 25px;
+            height: 25px;
+        }
+
     </style>
 </head>
 <body>
@@ -98,7 +111,6 @@
 </header>
 
 <main class="container">
-    <!--<h2 id="city"></h2>-->
     <div class="row">
         <div id="day1" data-day=0 class="col-xs-4 forecast"></div>
         <div id="day2" data-day=1 class="col-xs-4 forecast"></div>
@@ -154,12 +166,13 @@
             console.log(data);
             data.list.forEach(function (list, index) {
                 var output = '';
-                output  = '<b class="temp">' + parseInt(list.temp.max) + '&deg;' + '/' + parseInt(list.temp.min) + '&deg;'+ '</b>';
+                output = getDate(index);
                 output += '<br> <img src="http://openweathermap.org/img/w/' + list.weather[0].icon + '.png">';
-                output += '<br><b>' + list.weather[0].main + ': </b>' + list.weather[0].description;
-                output += '<br><b>Humidity: </b> ' + list.humidity;
-                output += '<br><b>Wind: </b> ' + parseInt(list.speed);
-                output += '<br><b>Pressure: </b> ' + list.pressure;
+                output += '<br><b class="temp">' + parseInt(list.temp.max) + '&deg;' + '/' + parseInt(list.temp.min) + '&deg;'+ '</b>';
+                output += '<br>' + firstLetterUpperCase(list.weather[0].description);
+                output += '<br><img class="icons" src="img/humidity.png">' + list.humidity + '%';
+                output += '<br><img class="icons" src="img/wind.png"> ' + degToCompassDir(list.deg)+ ' ' + parseInt(list.speed) + ' MPH';
+//                output += '<br><img class="icons" src="img/pressure.png"> ' + parseInt(list.pressure) + ' hPa';
                 $('#day' + (index+1)).html(output);
             });
 
@@ -204,6 +217,37 @@
             marker.addListener('dragend', function(event){
                 markerDragEnd(event);
             });
+        }
+
+        function getDate(day) {
+            var today = new Date(), tomorrow, dayAfterTomorrow, date, indexDayOfWeek;
+            var dayOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday","Saturday"];
+            var month = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+
+            switch (day) {
+                case 0:
+                    return '<span class="dayOfWeek"> Today </span> <br>' + month[today.getMonth()] + ' ' + today.getDate();
+                case 1:
+                    tomorrow = new Date(today.getTime() + (24 * 60 * 60 * 1000));
+                    date = month[tomorrow.getMonth()] + ' ' + tomorrow.getDate();
+                    indexDayOfWeek = tomorrow.getDay();
+                    break;
+                case 2:
+                    dayAfterTomorrow = new Date(today.getTime() + (48 * 60 * 60 * 1000));
+                    date = month[dayAfterTomorrow.getMonth()] + ' ' + dayAfterTomorrow.getDate();
+                    indexDayOfWeek = dayAfterTomorrow.getDay();
+                    break;
+            }
+            return '<span class="dayOfWeek">' + dayOfWeek[indexDayOfWeek] + '</span> <br>' + date;
+        }
+        
+        function degToCompassDir(deg) {
+            var compassDir = ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW","N"];
+            return compassDir[Math.round(deg/22.5)];
+        }
+
+        function firstLetterUpperCase(string) {
+            return (string.substring(0,1)).toUpperCase() + string.substring(1,string.length);
         }
 
 
