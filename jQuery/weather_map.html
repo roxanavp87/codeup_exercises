@@ -14,7 +14,7 @@
             width: 100%;
         }
 
-        .forecast {
+        .forecast3Days, #today {
             background-color: #F2F2F2;
             border: 1px solid darkgray;
             text-align: center;
@@ -22,7 +22,7 @@
             padding-bottom: 15px;
         }
 
-        .forecast:hover {
+        .forecast3Days:hover, .options:hover {
             opacity: 0.7;
         }
 
@@ -75,6 +75,25 @@
             height: 25px;
         }
 
+        .options {
+            background-color: #F2F2F2;
+            border: 1px solid darkgray;
+            text-align: center;
+            height: 30px;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: green;
+            font-weight: bold;
+        }
+        
+        #today {
+            display: none;
+        }
+
+        .active {
+            background-color: #bababa;
+        }
+
     </style>
 </head>
 <body>
@@ -112,9 +131,18 @@
 
 <main class="container">
     <div class="row">
-        <div id="day1" data-day=0 class="col-xs-4 forecast"></div>
-        <div id="day2" data-day=1 class="col-xs-4 forecast"></div>
-        <div id="day3" data-day=2 class="col-xs-4 forecast"></div>
+        <div data-option=1 class="col-xs-2 options">Today</div>
+        <div data-option=2 class="col-xs-2 options active">3 days</div>
+        <div data-option=3 class="col-xs-2 options">4 days</div>
+        <div data-option=4 class="col-xs-2 options">6 days</div>
+        <div data-option=5 class="col-xs-2 options">8 days</div>
+        <div data-option=6 class="col-xs-2 options">10 days</div>
+    </div>
+    <div class="row">
+        <div id="today" data-day=2 class="col-xs-12"></div>
+        <div id="day1" data-day=0 class="col-xs-4 forecast3Days"></div>
+        <div id="day2" data-day=1 class="col-xs-4 forecast3Days"></div>
+        <div id="day3" data-day=2 class="col-xs-4 forecast3Days"></div>
     </div>
 
     <div id="map" class="row"></div>
@@ -146,6 +174,7 @@
             cnt: 3,
             units: "imperial"
         };
+        var today = false; // true: show only today weather
 
         function renderMap(lat, lng) {
             mapOptions = {
@@ -161,19 +190,26 @@
                 position: {lat: lat, lng: lng}
             });
         }
-        
-        function update3DaysForecast(data) {
-            console.log(data);
-            data.list.forEach(function (list, index) {
-                var output = '';
-                output = getDate(index);
-                output += '<br> <img src="http://openweathermap.org/img/w/' + list.weather[0].icon + '.png">';
-                output += '<br><b class="temp">' + parseInt(list.temp.max) + '&deg;' + '/' + parseInt(list.temp.min) + '&deg;'+ '</b>';
-                output += '<br>' + firstLetterUpperCase(list.weather[0].description);
-                output += '<br><img class="icons" src="img/humidity.png">' + list.humidity + '%';
-                output += '<br><img class="icons" src="img/wind.png"> ' + degToCompassDir(list.deg)+ ' ' + parseInt(list.speed) + ' MPH';
+
+        function updateOutput(list, index) {
+            var output = '';
+            output = getDate(index);
+            output += '<br> <img src="http://openweathermap.org/img/w/' + list.weather[0].icon + '.png">';
+            output += '<br><b class="temp">' + parseInt(list.temp.max) + '&deg;' + '/' + parseInt(list.temp.min) + '&deg;'+ '</b>';
+            output += '<br>' + firstLetterUpperCase(list.weather[0].description);
+            output += '<br><img class="icons" src="img/humidity.png">' + list.humidity + '%';
+            output += '<br><img class="icons" src="img/wind.png"> ' + degToCompassDir(list.deg)+ ' ' + parseInt(list.speed) + ' MPH';
 //                output += '<br><img class="icons" src="img/pressure.png"> ' + parseInt(list.pressure) + ' hPa';
-                $('#day' + (index+1)).html(output);
+            return output;
+        }
+        
+        function update3DaysForecast(data, today) {
+            console.log(data);
+            if(today) {
+                $('#today').html(updateOutput(data.list[0], 0));
+            }
+            data.list.forEach(function (list, index) {
+                $('#day' + (index+1)).html(updateOutput(list, index));
             });
 
             $('#city').text(data.city.name);
@@ -186,6 +222,18 @@
 
             //Update background to current weather
             $('body').css('background-image', 'url("img/' + (data.list[0].weather[0].main).toLowerCase() + '.gif")');
+        }
+
+        function updateForecastAndMap(data, today) {
+            update3DaysForecast(data, today);
+
+            renderMap(lat, lng);
+
+            marker.addListener('click', markerBounceAnimation);
+
+            marker.addListener('dragend', function(event){
+                markerDragEnd(event);
+            });
         }
 
         function markerBounceAnimation() {
@@ -203,19 +251,7 @@
             delete weatherOptions.q;
 
             $.get(url, weatherOptions).done(function (data) {
-                update3DaysForecast(data);
-            });
-        }
-
-        function updateForecastAndMap(data) {
-            update3DaysForecast(data);
-
-            renderMap(lat, lng);
-
-            marker.addListener('click', markerBounceAnimation);
-
-            marker.addListener('dragend', function(event){
-                markerDragEnd(event);
+                update3DaysForecast(data, today);
             });
         }
 
@@ -254,10 +290,10 @@
         $.get(url, weatherOptions).done(function (data) {
 
             //Update 3 days forecast and google maps
-            updateForecastAndMap(data);
+            updateForecastAndMap(data, today);
 
 
-            $('.forecast').click(function () {
+            $('.forecast3Days').click(function () {
                 //Update background when it clicked a forecast
                 $('body').css('background-image', 'url("img/' + (object.list[$(this).attr('data-day')].weather[0].main).toLowerCase() + '.gif")');
             });
@@ -270,8 +306,32 @@
 
                 $.get(url, weatherOptions).done(function (data) {
                     //Update 3 days forecast and google maps
-                    updateForecastAndMap(data);
+                    updateForecastAndMap(data, today);
                 });
+            });
+
+            $('.options').click(function () {
+                today = false;
+
+                $('.options').each(function (i, option) {
+                    $(option).removeClass('active');
+                });
+                $(this).addClass('active');
+
+                switch ($(this).attr('data-option')) {
+                    case '1':                                 //Today
+                        $('.forecast3Days').hide();
+                        $('#today').show();
+                        today = true;
+                        updateForecastAndMap(object, today);
+                        break;
+                    case '2':                                 //3 days forecast
+                        $('.forecast3Days').show();
+                        $('#today').hide();
+                        updateForecastAndMap(object, today);
+                        break;
+                }
+
             });
 
         });
