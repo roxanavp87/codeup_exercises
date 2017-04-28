@@ -127,18 +127,31 @@
 
 <main class="container">
     <div class="row">
-        <div data-option=1 class="col-xs-2 options">Today</div>
-        <div data-option=2 class="col-xs-2 options active">3 days</div>
-        <div data-option=3 class="col-xs-2 options">4 days</div>
-        <div data-option=4 class="col-xs-2 options">6 days</div>
-        <div data-option=5 class="col-xs-2 options">8 days</div>
-        <div data-option=6 class="col-xs-2 options">10 days</div>
+        <div data-option=1  class="col-xs-2 options">Today</div>
+        <div data-option=3  class="col-xs-2 options active">3 days</div>
+        <div data-option=4  class="col-xs-2 options">4 days</div>
+        <div data-option=6  class="col-xs-2 options">6 days</div>
+        <div data-option=8  class="col-xs-2 options">8 days</div>
+        <div data-option=16 class="col-xs-2 options">16 days</div>
     </div>
     <div class="row">
-        <div id="day1" data-day=0 class="col-xs-4 forecast"></div>
-        <div id="day2" data-day=1 class="col-xs-4 forecast"></div>
-        <div id="day3" data-day=2 class="col-xs-4 forecast"></div>
-        <div id="day4" data-day=2 class="col-xs-4 hide forecast"></div>
+        <div id="day1"  data-day=0 class="col-xs-4 forecast"></div>
+        <div id="day2"  data-day=1 class="col-xs-4 forecast"></div>
+        <div id="day3"  data-day=2 class="col-xs-4 forecast"></div>
+        <div id="day4"  data-day=2 class="hide forecast"></div>
+        <div id="day5"  data-day=2 class="hide forecast"></div>
+        <div id="day6"  data-day=2 class="hide forecast"></div>
+        <div id="day7"  data-day=2 class="hide forecast"></div>
+        <div id="day8"  data-day=2 class="hide forecast"></div>
+        <div id="day9"  data-day=2 class="hide forecast"></div>
+        <div id="day10" data-day=2 class="hide forecast"></div>
+        <div id="day11" data-day=2 class="hide forecast"></div>
+        <div id="day12" data-day=2 class="hide forecast"></div>
+        <div id="day13" data-day=2 class="hide forecast"></div>
+        <div id="day14" data-day=2 class="hide forecast"></div>
+        <div id="day15" data-day=2 class="hide forecast"></div>
+        <div id="day16" data-day=2 class="hide forecast"></div>
+
     </div>
 
     <div id="map" class="row"></div>
@@ -167,7 +180,7 @@
         var weatherOptions = {
             APPID: "daccf0a60cafe2bdc646583c5f8fbdbb",
             q: city,
-            cnt: 4,
+            cnt: 16,
             units: "imperial"
         };
 
@@ -244,26 +257,18 @@
             });
         }
 
-        function getDate(day) {
-            var today = new Date(), tomorrow, dayAfterTomorrow, date, indexDayOfWeek;
+        function getDate(day) {  //today: day=0, tomorrow: day=1, dayAfterTomorrow: day=2 ...
+            var today = new Date(), date, indexDayOfWeek;
             var dayOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday","Saturday"];
             var month = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-
-            switch (day) {
-                case 0:
-                    return '<span class="dayOfWeek"> Today </span> <br>' + month[today.getMonth()] + ' ' + today.getDate();
-                case 1:
-                    tomorrow = new Date(today.getTime() + (24 * 60 * 60 * 1000));
-                    date = month[tomorrow.getMonth()] + ' ' + tomorrow.getDate();
-                    indexDayOfWeek = tomorrow.getDay();
-                    break;
-                case 2:
-                    dayAfterTomorrow = new Date(today.getTime() + (48 * 60 * 60 * 1000));
-                    date = month[dayAfterTomorrow.getMonth()] + ' ' + dayAfterTomorrow.getDate();
-                    indexDayOfWeek = dayAfterTomorrow.getDay();
-                    break;
+            if(day != 0) {
+                day = new Date(today.getTime() + day * (24 * 60 * 60 * 1000));
+                indexDayOfWeek = day.getDay();
+                date = month[day.getMonth()] + ' ' + day.getDate();
+                return '<span class="dayOfWeek">' + dayOfWeek[indexDayOfWeek] + '</span> <br>' + date;
+            } else {
+                return '<span class="dayOfWeek"> Today </span> <br>' + month[today.getMonth()] + ' ' + today.getDate();
             }
-            return '<span class="dayOfWeek">' + dayOfWeek[indexDayOfWeek] + '</span> <br>' + date;
         }
         
         function degToCompassDir(deg) {
@@ -273,6 +278,12 @@
 
         function firstLetterUpperCase(string) {
             return (string.substring(0,1)).toUpperCase() + string.substring(1,string.length);
+        }
+
+        function toggleColClass(days, cols) {
+            for(var i=1; i<=days; i++) {
+                $('#day' + i).toggleClass('col-xs-' + cols + ' hide');
+            }
         }
 
 
@@ -306,21 +317,26 @@
                 });
                 $(this).addClass('active');
 
-                $('.forecast').removeClass('col-xs-12 col-xs-4').addClass('hide');
+                $('.forecast').removeClass('col-xs-12 col-xs-4 col-xs-3').addClass('hide');
 
                 switch ($(this).attr('data-option')) {
                     case '1':                                 //Today
                         $('#day1').toggleClass('col-xs-12 hide');
                         break;
-                    case '2':                                 //3 days forecast
-                        for(var i=1; i<=3; i++) {
-                            $('#day' + i).toggleClass('col-xs-4 hide');
-                        }
+                    case '3':                                 //3 days forecast
+                        toggleColClass(3, 4);
                         break;
-                    case '3':                                 //4 days forecast
-                        for(var i=1; i<=4; i++) {
-                            $('#day' + i).toggleClass('col-xs-3 hide');
-                        }
+                    case '4':                                 //4 days forecast
+                        toggleColClass(4, 3);
+                        break;
+                    case '6':                                 //6 days forecast
+                        toggleColClass(6, 4);
+                        break;
+                    case '8':                                 //8 days forecast
+                        toggleColClass(8, 3);
+                        break;
+                    case '16':                                 //16 days forecast
+                        toggleColClass(16, 3);
                         break;
                 }
 
