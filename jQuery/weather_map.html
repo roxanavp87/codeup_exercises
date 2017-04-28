@@ -138,6 +138,7 @@
         <div id="day1" data-day=0 class="col-xs-4 forecast"></div>
         <div id="day2" data-day=1 class="col-xs-4 forecast"></div>
         <div id="day3" data-day=2 class="col-xs-4 forecast"></div>
+        <div id="day4" data-day=2 class="col-xs-4 hide forecast"></div>
     </div>
 
     <div id="map" class="row"></div>
@@ -305,15 +306,21 @@
                 });
                 $(this).addClass('active');
 
+                $('.forecast').removeClass('col-xs-12 col-xs-4').addClass('hide');
+
                 switch ($(this).attr('data-option')) {
                     case '1':                                 //Today
-                        $('.forecast').toggleClass('col-xs-4 hide');
                         $('#day1').toggleClass('col-xs-12 hide');
-
                         break;
                     case '2':                                 //3 days forecast
-                        $('.forecast').toggleClass('col-xs-4 hide');
-                        $('#day1').toggleClass('col-xs-12 hide');
+                        for(var i=1; i<=3; i++) {
+                            $('#day' + i).toggleClass('col-xs-4 hide');
+                        }
+                        break;
+                    case '3':                                 //4 days forecast
+                        for(var i=1; i<=4; i++) {
+                            $('#day' + i).toggleClass('col-xs-3 hide');
+                        }
                         break;
                 }
 
