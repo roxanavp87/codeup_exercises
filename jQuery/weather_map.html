@@ -127,7 +127,13 @@
         var map, lat, lng, mapOptions, marker;
 
         //Declarations for weather API
-        var object;
+        var object, city = "San Antonio, TX", url = "http://api.openweathermap.org/data/2.5/forecast/daily";
+        var weatherOptions = {
+            APPID: "daccf0a60cafe2bdc646583c5f8fbdbb",
+            q: city,
+            cnt: 3,
+            units: "imperial"
+        };
 
         function renderMap(lat, lng) {
             mapOptions = {
@@ -160,100 +166,71 @@
             $('#city').text(data.city.name);
             $('.temp').css('font-size', '25px');
 
+            //Update global variables
             lat = data.city.coord.lat;
             lng = data.city.coord.lon;
-        }
-
-        $.get("http://api.openweathermap.org/data/2.5/forecast/daily", {
-
-            APPID: "daccf0a60cafe2bdc646583c5f8fbdbb",
-            q:     "San Antonio, TX",
-            cnt: 3,
-            units: "imperial"
-
-        }).done(function (data) {
-
-            update3DaysForecast(data);
-
-            //Update data form weather API
             object = data;
 
             //Update background to current weather
             $('body').css('background-image', 'url("img/' + (data.list[0].weather[0].main).toLowerCase() + '.gif")');
+        }
 
-            // Init the map
-            renderMap(lat, lng);
-            
-            marker.addListener('click', function () {
-                if (marker.getAnimation() !== null) {
-                    marker.setAnimation(null);
-                } else {
-                    marker.setAnimation(google.maps.Animation.BOUNCE);
-                }
+        function markerBounceAnimation() {
+            if (marker.getAnimation() !== null) {
+                marker.setAnimation(null);
+            } else {
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+            }
+        }
+
+        function markerDragEnd(event) {
+
+            weatherOptions.lat = event.latLng.lat();
+            weatherOptions.lon = event.latLng.lng();
+            delete weatherOptions.q;
+
+            $.get(url, weatherOptions).done(function (data) {
+                update3DaysForecast(data);
             });
+        }
 
+        function updateForecastAndMap(data) {
+            update3DaysForecast(data);
+
+            renderMap(lat, lng);
+
+            marker.addListener('click', markerBounceAnimation);
 
             marker.addListener('dragend', function(event){
-                lat = event.latLng.lat();
-                lng = event.latLng.lng();
-                $.get("http://api.openweathermap.org/data/2.5/forecast/daily", {
-
-                    APPID: "daccf0a60cafe2bdc646583c5f8fbdbb",
-                    lat: lat,
-                    lon: lng,
-                    cnt: 3,
-                    units: "imperial"
-
-                }).done(function (data) {
-                    update3DaysForecast(data);
-//                    renderMap(lat, lng);
-
-                    //Update data form weather API
-                    object = data;
-
-                    //Update background to current weather
-                    $('body').css('background-image', 'url("img/' + (data.list[0].weather[0].main).toLowerCase() + '.gif")');
-
-                });
-
+                markerDragEnd(event);
             });
+        }
+
+
+        $.get(url, weatherOptions).done(function (data) {
+
+            //Update 3 days forecast and google maps
+            updateForecastAndMap(data);
+
 
             $('.forecast').click(function () {
-//                console.log(object)
                 //Update background when it clicked a forecast
-                var day = $(this).attr('data-day');
-                $('body').css('background-image', 'url("img/' + (object.list[day].weather[0].main).toLowerCase() + '.gif")');
+                $('body').css('background-image', 'url("img/' + (object.list[$(this).attr('data-day')].weather[0].main).toLowerCase() + '.gif")');
             });
 
             $('#btn-go').click(function (event) {
-                var city = $('#search').val();
                 event.preventDefault();
-                $.get("http://api.openweathermap.org/data/2.5/forecast/daily", {
+                weatherOptions.q = $('#search').val();
+                delete weatherOptions.lat;
+                delete weatherOptions.lng;
 
-                    APPID: "daccf0a60cafe2bdc646583c5f8fbdbb",
-                    q: city,
-                    cnt: 3,
-                    units: "imperial"
-
-                }).done(function (data) {
-                    update3DaysForecast(data);
-
-                    //Update data form weather API
-                    object = data;
-
-                    //Update background to current weather
-                    $('body').css('background-image', 'url("img/' + (data.list[0].weather[0].main).toLowerCase() + '.gif")');
-
+                $.get(url, weatherOptions).done(function (data) {
+                    //Update 3 days forecast and google maps
+                    updateForecastAndMap(data);
                 });
-
             });
 
-
-        });  // end $.get(...weather...
-
-
-
-
+        });
 
     });
 </script>
