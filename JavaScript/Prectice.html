@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    "use strict";
+
+//    Given a string, find the first non-repeating character in it. For example, if the input string is “GeeksforGeeks”,
+//    then output should be ‘f’ and if input string is “GeeksQuiz”, then output should be ‘G’.
+
+    function findFirstNonRepeatingChar(str) {
+        for(var i=0; i<str.length; i++) {
+            var substr = str.substring(i+1, str.length + 1);
+            if(substr.indexOf(str[i]) === -1){
+                return str[i];
+            }
+        }
+        return null;
+    }
+    var str = "GeeksforGeeks";
+    console.log(findFirstNonRepeatingChar(str));
+
+</script>
+</body>
+</html>
