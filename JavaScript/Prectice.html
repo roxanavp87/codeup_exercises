@@ -10,7 +10,6 @@
 
 //    Given a string, find the first non-repeating character in it. For example, if the input string is “GeeksforGeeks”,
 //    then output should be ‘f’ and if input string is “GeeksQuiz”, then output should be ‘G’.
-
     function findFirstNonRepeatingChar(str) {
         for(var i=0; i<str.length; i++) {
             var substr = str.substring(i+1, str.length + 1);
@@ -22,6 +21,27 @@
     }
     var str = "GeeksforGeeks";
     console.log(findFirstNonRepeatingChar(str));
+
+
+//    Given an array [1,0,3,5,0,0,34,5,0,36] push all the zeros to the end.
+    function pushZerosToEnd( arr) {
+        var arrZeros = [];
+        var arrNonZeros = [];
+
+        arr.forEach(function (e) {
+            if(e != 0) {
+                arrNonZeros.push(e);
+            } else {
+                arrZeros.push(e);
+            }
+        });
+
+        return arrNonZeros.concat(arrZeros);
+    }
+
+    var arr = [1,0,3,5,0,0,34,5,0,36];
+    console.log(pushZerosToEnd(arr).toString());
+
 
 </script>
 </body>
