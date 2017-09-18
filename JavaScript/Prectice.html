@@ -19,8 +19,8 @@
         }
         return null;
     }
-    var str = "GeeksforGeeks";
-    console.log(findFirstNonRepeatingChar(str));
+//    var str = "GeeksforGeeks";
+//    console.log(findFirstNonRepeatingChar(str));
 
 
 //    Given an array [1,0,3,5,0,0,34,5,0,36] push all the zeros to the end.
@@ -39,10 +39,74 @@
         return arrNonZeros.concat(arrZeros);
     }
 
-    var arr = [1,0,3,5,0,0,34,5,0,36];
-    console.log(pushZerosToEnd(arr).toString());
+//    var arr = [1,0,3,5,0,0,34,5,0,36];
+//    console.log(pushZerosToEnd(arr).toString());
+
+//    Write javascript function for add(3)(4)
+    function add(x) {
+        return function (y) {
+            return x+y;
+        }
+    }
+
+    //    console.log(add(3)(4));
+    
+    function objects() {
+        var library = [
+            {
+                author: 'Bill Gates',
+                title: 'The Road Ahead',
+                readingStatus: true
+            },
+            {
+                author: 'Steve Jobs',
+                title: 'Walter Isaacson',
+                readingStatus: true
+            },
+            {
+                author: 'Suzanne Collins',
+                title:  'Mockingjay: The Final Book of The Hunger Games',
+                readingStatus: false
+            }];
+        
+        library.forEach(function (book) {
+           console.log("Author: " +book.author + ", Title: " + book.title);
+        });
+    }
+
+//    objects();
+
+    function usingInheritance() {
+        function Person(first, last, age, gender) {
+            this.name = {
+                first: first,
+                last: last
+            };
+            this.age = age;
+            this.gender = gender;
+            this.toString = function() {
+                return "Name: " + this.name.first + " " + this.name.last + " Gender: " + this.gender;
+            }
+        }
+
+        function Teacher(first, last, age, gender, subject) {
+            Person.call(this, first, last, age, gender);
+            this.subject = subject;
+        }
+
+        var Rox = new Person("Rox", "Velazquez", 29, "F");
+        var Alb = new Teacher("Alb", "Sierra", 30, "M", "Math");
+
+        console.log(Rox.toString());
+        console.log(Alb.toString());
+
+    }
+
+    usingInheritance();
+
 
 
 </script>
+<script src="js/inheritance.js"></script>
 </body>
 </html>
